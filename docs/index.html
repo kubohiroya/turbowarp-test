@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="TurboWarp Plus Editor の作品の中に、ブロックで回帰テストを書くための拡張機能の使い方。">
+  <title>TurboWarp-Test — ブロックガイド</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.8; }
+    body { max-width: 800px; margin: 0 auto; padding: 32px 24px 72px; }
+    h1, h2 { line-height: 1.35; } h1 { font-size: clamp(2rem, 7vw, 3.4rem); margin-bottom: 12px; }
+    h2 { margin-top: 48px; } a { color: light-dark(#15803d, #86efac); }
+    header { border-bottom: 2px solid #16a34a; padding-bottom: 24px; }
+    .eyebrow { color: light-dark(#15803d, #86efac); letter-spacing: .12em; font-size: .85rem; }
+    .block { display: inline-block; border-radius: 24px; padding: 8px 20px; background: #16a34a; color: white; }
+    code { overflow-wrap: anywhere; font-size: .92em; }
+    pre { padding: 16px; border-radius: 8px; background: light-dark(#f0f7f2, #14241a); white-space: pre-wrap; }
+    section { scroll-margin-top: 24px; } footer { margin-top: 48px; border-top: 1px solid #7c9a86; padding-top: 20px; }
+  </style>
+</head>
+<body>
+  <header>
+    <p class="eyebrow">TURBOWARP EXTENSION · 0.1.0</p>
+    <h1>TurboWarp-Test</h1>
+    <p>作品の中に、ブロックのまま回帰テストを書きます。テストは専用のハットから始まり、緑の旗では動きません。確かめた結果は、失敗したブロックと一緒にテストの実行器へ届きます。</p>
+  </header>
+  <nav aria-label="目次">
+    <ul>
+      <li><a href="#start">読み込みと基本の使い方</a></li>
+      <li><a href="#block-whentest">テスト</a></li>
+      <li><a href="#block-whensetup">テストの前に</a></li>
+      <li><a href="#block-assert_strict_equals">=== で等しいことを確かめる</a></li>
+      <li><a href="#block-assert_equals">Scratch の = で等しいことを確かめる</a></li>
+      <li><a href="#block-assert_true">真であることを確かめる</a></li>
+      <li><a href="#block-assert_close">誤差以内で等しいことを確かめる</a></li>
+      <li><a href="#block-assert_list_equals">リストが等しいことを確かめる</a></li>
+      <li><a href="#block-assert_eventually">フレーム以内に真になることを確かめる</a></li>
+      <li><a href="#block-step_frames">フレーム進める</a></li>
+      <li><a href="#block-wait_until_bounded">真になるまで待つ（上限付き）</a></li>
+      <li><a href="#runner">実行器との約束</a></li>
+    </ul>
+  </nav>
+  <section id="start">
+    <h2>読み込みと基本の使い方</h2>
+    <p>TurboWarp Plus Editor では、「拡張機能を追加」の TurboWarp-Plus の一覧から読み込みます。ほかの TurboWarp では、「カスタム拡張機能」で <code>https://kubohiroya.github.io/turbowarp-test/dist/turbowarp-test.js</code> を指定し、サンドボックスなしで実行します。失敗したブロックを知らせ、フレームを数えるために、VM に直接触れる必要があるからです。</p>
+    <p>配布契約は<a href="./dist/extension-manifest.json">extension-manifest.json</a>で確認できます。</p>
+    <pre>テスト [台本の場面数を数える]
+  場面を読み込む
+  (リスト「場面」の長さ) が (3) と === で等しいことを確かめる</pre>
+    <p>スクリプトをクリックしても動きます。まとめて実行し、状態を毎回もとに戻すのは、TurboWarp Plus Editor のテスト実行器の役目です。</p>
+  </section>
+  <section id="block-whentest">
+    <h2>テスト</h2>
+    <p class="block">テスト [NAME]</p>
+    <p>ハットです。opcode は <code>whentest</code>、引数 <code>NAME</code> は表示用の名前です。緑の旗やほかのイベントでは起動しません。実行器はテストをターゲットとブロックIDで指すので、名前を変えても履歴は切れません。</p>
+  </section>
+  <section id="block-whensetup">
+    <h2>テストの前に</h2>
+    <p class="block">テストの前に</p>
+    <p>ハットです。opcode は <code>whensetup</code> です。実行器が作品の状態をもとに戻した後、各テストの前に動きます。スプライトとステージごとに1つまでにします。</p>
+  </section>
+  <section id="block-assert_strict_equals">
+    <h2>=== で等しいことを確かめる</h2>
+    <p class="block">[ACTUAL] が [EXPECTED] と === で等しいことを確かめる</p>
+    <p>opcode は <code>assert_strict_equals</code> です。型も値もそのまま比べます。文字の <code>"1"</code> と数の <code>1</code>、<code>"ABC"</code> と <code>"abc"</code> は等しくありません。</p>
+  </section>
+  <section id="block-assert_equals">
+    <h2>Scratch の = で等しいことを確かめる</h2>
+    <p class="block">[ACTUAL] が [EXPECTED] と（Scratch の = で）等しいことを確かめる</p>
+    <p>opcode は <code>assert_equals</code> です。Scratch の <code>=</code> と同じく、大文字と小文字を区別せず、数として読めれば数として比べます。<code>"1"</code> と <code>"1.0"</code>、<code>"ABC"</code> と <code>"abc"</code> は等しくなります。どちらで比べるかを、ブロックを選ぶことで明示します。</p>
+  </section>
+  <section id="block-assert_true">
+    <h2>真であることを確かめる</h2>
+    <p class="block">[CONDITION] であることを確かめる</p>
+    <p>opcode は <code>assert_true</code> です。空の穴は偽です。</p>
+  </section>
+  <section id="block-assert_close">
+    <h2>誤差以内で等しいことを確かめる</h2>
+    <p class="block">[ACTUAL] が [EXPECTED] と誤差 [TOLERANCE] 以内で等しいことを確かめる</p>
+    <p>opcode は <code>assert_close</code> です。数として読み、差が誤差以下なら通ります。座標や速さなど、小数の計算結果に使います。</p>
+  </section>
+  <section id="block-assert_list_equals">
+    <h2>リストが等しいことを確かめる</h2>
+    <p class="block">リスト [ACTUAL] がリスト [EXPECTED] と等しいことを確かめる</p>
+    <p>opcode は <code>assert_list_equals</code> です。長さが同じで、同じ位置の項目がすべて <code>===</code> で等しければ通ります。リストが見つからなければ失敗します。</p>
+  </section>
+  <section id="block-assert_eventually">
+    <h2>フレーム以内に真になることを確かめる</h2>
+    <p class="block">[FRAMES] フレーム以内に [CONDITION] になることを確かめる</p>
+    <p>opcode は <code>assert_eventually</code> です。条件を1フレームに1回確かめ、真になった時点で通ります。指定したフレーム数を過ぎても偽なら失敗します。秒ではなくフレームで数えるので、コンピューターの速さで結果が変わりません。</p>
+    <p>条件を確かめ直せるのは、インタープリターで動くときだけです。実行器はコンパイラーを切ってテストを動かします。コンパイルされたスクリプトでは、最初に偽なら、そのことを示して失敗します。</p>
+  </section>
+  <section id="block-step_frames">
+    <h2>フレーム進める</h2>
+    <p class="block">[FRAMES] フレーム進める</p>
+    <p>opcode は <code>step_frames</code> です。指定したフレーム数だけ待ち、ほかのスクリプトや動き、クローンを進めます。</p>
+  </section>
+  <section id="block-wait_until_bounded">
+    <h2>真になるまで待つ（上限付き）</h2>
+    <p class="block">[CONDITION] になるまで待つ（最大 [FRAMES] フレーム）</p>
+    <p>opcode は <code>wait_until_bounded</code> です。条件が真になるまで、1フレームに1回確かめながら待ちます。上限を過ぎるとテストの失敗として記録します。インタープリターについての注意は、上のブロックと同じです。</p>
+  </section>
+  <section id="runner">
+    <h2>実行器との約束</h2>
+    <p>確かめるブロックは、結果を1件ずつ VM の runtime にイベント <code>KUBOHIROYATEST_ASSERTION</code> として出します。中身は確かめた種類、通ったかどうか、ブロックID、スクリプトの先頭のブロックID、ターゲットID、フレーム数、実際の値と期待した値です。失敗したときは、そのスクリプトを止めます。</p>
+    <p>テストを含む作品を配布するとき、テストは不活性のまま残せます。外すときは <code>sb3-toolchain build --strip-tests</code> を使います。</p>
+    <p><a href="https://github.com/kubohiroya/turbowarp-test">ソースコード</a>は MPL-2.0 で公開しています。</p>
+  </section>
+  <footer>
+    <p>設計: <a href="https://github.com/kubohiroya/turbowarp-plus-editor/issues/774">turbowarp-plus-editor #774</a> · MPL-2.0</p>
+  </footer>
+<!-- The shared TurboWarp Plus header. It inserts itself at the top of the
+     page in a shadow root, so it cannot disturb the styles below. -->
+<script type="module"
+        src="https://kubohiroya.github.io/turbowarp-plus-site-header/dist/auto.js"></script>
+</body>
+</html>

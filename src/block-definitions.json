@@ -1,0 +1,103 @@
+{
+  "extensionName": "Test",
+  "blocks": [
+    {
+      "opcode": "whentest",
+      "blockType": "HAT",
+      "text": "test [NAME]",
+      "description": "Starts one test. The green flag never starts it: the test runner of TurboWarp Plus Editor does, or you click the script. NAME is only for display; tools address the test by its target and block ID.",
+      "arguments": {
+        "NAME": {"type": "STRING", "defaultValue": "my test"}
+      }
+    },
+    {
+      "opcode": "whensetup",
+      "blockType": "HAT",
+      "text": "before each test",
+      "description": "Runs before every test, after the runner has restored the project. Use at most one per sprite or stage. The green flag never starts it.",
+      "arguments": {}
+    },
+    {
+      "opcode": "assert_strict_equals",
+      "blockType": "COMMAND",
+      "text": "check [ACTUAL] === [EXPECTED]",
+      "description": "Passes when the two values are identical, type included, as JavaScript's === compares them: the text \"1\" does not equal the number 1, and \"ABC\" does not equal \"abc\". A failure stops this script.",
+      "arguments": {
+        "ACTUAL": {"type": "STRING", "defaultValue": ""},
+        "EXPECTED": {"type": "STRING", "defaultValue": ""}
+      }
+    },
+    {
+      "opcode": "assert_equals",
+      "blockType": "COMMAND",
+      "text": "check [ACTUAL] equals [EXPECTED]",
+      "description": "Passes when Scratch's = operator says the two values are equal: case is ignored and numbers are compared as numbers, so \"1\" equals \"1.0\" and \"ABC\" equals \"abc\". A failure stops this script.",
+      "arguments": {
+        "ACTUAL": {"type": "STRING", "defaultValue": ""},
+        "EXPECTED": {"type": "STRING", "defaultValue": ""}
+      }
+    },
+    {
+      "opcode": "assert_true",
+      "blockType": "COMMAND",
+      "text": "check [CONDITION] is true",
+      "description": "Passes when the condition is true. An empty slot is false. A failure stops this script.",
+      "arguments": {
+        "CONDITION": {"type": "BOOLEAN"}
+      }
+    },
+    {
+      "opcode": "assert_close",
+      "blockType": "COMMAND",
+      "text": "check [ACTUAL] is within [TOLERANCE] of [EXPECTED]",
+      "description": "Passes when the two values, read as numbers, differ by at most the tolerance. Use it for positions, speeds and other results of floating-point arithmetic. A failure stops this script.",
+      "arguments": {
+        "ACTUAL": {"type": "NUMBER", "defaultValue": 0},
+        "TOLERANCE": {"type": "NUMBER", "defaultValue": 0.001},
+        "EXPECTED": {"type": "NUMBER", "defaultValue": 0}
+      }
+    },
+    {
+      "opcode": "assert_list_equals",
+      "blockType": "COMMAND",
+      "text": "check list [ACTUAL] equals list [EXPECTED]",
+      "description": "Passes when the two lists have the same length and every item is identical (===) to the item in the same place. A failure stops this script.",
+      "arguments": {
+        "ACTUAL": {"type": "STRING", "menu": "lists"},
+        "EXPECTED": {"type": "STRING", "menu": "lists"}
+      }
+    },
+    {
+      "opcode": "assert_eventually",
+      "blockType": "COMMAND",
+      "text": "check [CONDITION] becomes true within [FRAMES] frames",
+      "description": "Checks the condition once in each frame and passes as soon as it is true. Fails when it is still false after the given number of frames. It counts frames, not seconds, so the result does not depend on the speed of the computer. The condition is checked again only when the script runs in the interpreter, as the test runner runs it; in a compiled script the block fails and says so. A failure stops this script.",
+      "arguments": {
+        "CONDITION": {"type": "BOOLEAN"},
+        "FRAMES": {"type": "NUMBER", "defaultValue": 30}
+      }
+    },
+    {
+      "opcode": "step_frames",
+      "blockType": "COMMAND",
+      "text": "advance [FRAMES] frames",
+      "description": "Waits for the given number of frames, so that other scripts, motion and clones move on. It counts frames, not seconds.",
+      "arguments": {
+        "FRAMES": {"type": "NUMBER", "defaultValue": 1}
+      }
+    },
+    {
+      "opcode": "wait_until_bounded",
+      "blockType": "COMMAND",
+      "text": "wait until [CONDITION] (at most [FRAMES] frames)",
+      "description": "Waits until the condition is true, checking it once in each frame. Waiting longer than the given number of frames is a test failure and stops this script. As with the eventually check, the condition is checked again only in the interpreter.",
+      "arguments": {
+        "CONDITION": {"type": "BOOLEAN"},
+        "FRAMES": {"type": "NUMBER", "defaultValue": 30}
+      }
+    }
+  ],
+  "menus": {
+    "lists": {"acceptReporters": false}
+  }
+}

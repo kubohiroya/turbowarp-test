@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "productName": "TurboWarp-Test",
+  "packageType": "extension",
+  "licensePolicy": "mpl-2.0",
+  "readmeLanguages": [
+    "en",
+    "ja"
+  ],
+  "canonicalReadme": "README.md",
+  "localizedReadmes": {
+    "ja": "README.ja.md"
+  },
+  "node": {
+    "minimum": "24"
+  },
+  "packageManager": "pnpm",
+  "requiredFiles": [
+    "README.md",
+    "README.ja.md",
+    "LICENSE"
+  ],
+  "exceptions": {
+    "upstreamFork": false,
+    "mixedContentLicenses": false,
+    "legacyPackageName": false,
+    "thirdPartyBundle": false
+  },
+  "migrationChecklist": [
+    "Keep extension IDs, opcodes, argument IDs and the assertion record compatible with saved projects and runners.",
+    "Keep the test hat opcodes in step with sb3-toolchain build --strip-tests.",
+    "Configure GitHub Pages through the API and verify the published block documentation after repository creation is authorized."
+  ]
+}

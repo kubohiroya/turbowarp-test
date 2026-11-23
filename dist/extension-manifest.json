@@ -1,0 +1,137 @@
+{
+  "formatVersion": 1,
+  "id": "kubohiroyatest",
+  "blocks": [
+    {
+      "opcode": "assert_close",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "ACTUAL",
+          "type": "NUMBER"
+        },
+        {
+          "id": "EXPECTED",
+          "type": "NUMBER"
+        },
+        {
+          "id": "TOLERANCE",
+          "type": "NUMBER"
+        }
+      ]
+    },
+    {
+      "opcode": "assert_equals",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "ACTUAL",
+          "type": "STRING"
+        },
+        {
+          "id": "EXPECTED",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "assert_eventually",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "CONDITION",
+          "type": "BOOLEAN"
+        },
+        {
+          "id": "FRAMES",
+          "type": "NUMBER"
+        }
+      ]
+    },
+    {
+      "opcode": "assert_list_equals",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "ACTUAL",
+          "type": "STRING",
+          "menu": "lists"
+        },
+        {
+          "id": "EXPECTED",
+          "type": "STRING",
+          "menu": "lists"
+        }
+      ]
+    },
+    {
+      "opcode": "assert_strict_equals",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "ACTUAL",
+          "type": "STRING"
+        },
+        {
+          "id": "EXPECTED",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "assert_true",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "CONDITION",
+          "type": "BOOLEAN"
+        }
+      ]
+    },
+    {
+      "opcode": "step_frames",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "FRAMES",
+          "type": "NUMBER"
+        }
+      ]
+    },
+    {
+      "opcode": "wait_until_bounded",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "CONDITION",
+          "type": "BOOLEAN"
+        },
+        {
+          "id": "FRAMES",
+          "type": "NUMBER"
+        }
+      ]
+    },
+    {
+      "opcode": "whensetup",
+      "blockType": "HAT",
+      "arguments": []
+    },
+    {
+      "opcode": "whentest",
+      "blockType": "HAT",
+      "arguments": [
+        {
+          "id": "NAME",
+          "type": "STRING"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "id": "lists",
+      "acceptReporters": false
+    }
+  ]
+}
